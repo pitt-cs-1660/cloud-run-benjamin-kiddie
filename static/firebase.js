@@ -117,11 +117,27 @@ async function vote(team) {
     try {
       const token = await createIdToken();
 
-      /*
-       * ++++ YOUR CODE HERE ++++
-       */
-      window.alert(`Not implemented yet!`);
+      if (authDisabled()) {
+        console.warn('Auth is disabled. Sending vote without authentication.')
+      }
 
+      const formData = new FormData();
+      formData.append('team', team);
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: formData,
+      });
+      const result = await response.json();
+
+      if (response.ok) {
+        window.alert(`Vote for ${team} submitted successfully!`);
+      } else {
+        throw new Error(result.detail || 'An error occurred while submitting your vote.');
+      }
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);
       window.alert('Something went wrong... Please try again!');

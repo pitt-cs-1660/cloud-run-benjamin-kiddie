@@ -14,6 +14,6 @@
  * @type {{apiKey: string, authDomain: string}}
  */
 const config = {
-  apiKey: 'AIzaSyDhwsk8AklD8Ipj26fVzYTMgrWvE8x1rgc',
-  authDomain: 'cc-spring2025.firebaseapp.com',
+  apiKey: "AIzaSyCNuCCqZhwIJxY1QzJaFjLz1-e18Z_UkI4",
+  authDomain: "cs1660-bjk96.firebaseapp.com",
 };
