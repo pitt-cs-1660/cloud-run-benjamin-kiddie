@@ -54,10 +54,13 @@
   </div>
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      document.getElementById("voteTabs").addEventListener("click", function () {
+      document.getElementById("signInButton").addEventListener("click", () => {
+        toggle();
+      })
+      document.getElementById("voteTabs").addEventListener("click", () => {
         vote("TABS");
       });
-      document.getElementById("voteSpaces").addEventListener("click", function () {
+      document.getElementById("voteSpaces").addEventListener("click", () => {
         vote("SPACES");
       });
     })

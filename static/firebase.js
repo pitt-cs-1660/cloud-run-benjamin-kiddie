@@ -121,23 +121,25 @@ async function vote(team) {
         console.warn('Auth is disabled. Sending vote without authentication.')
       }
 
-      const formData = new FormData();
-      formData.append('team', team);
-      const response = await fetch('/', {
+      await fetch('/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           'Authorization': `Bearer ${token}`,
         },
-        body: formData,
-      });
-      const result = await response.json();
-
-      if (response.ok) {
-        window.alert(`Vote for ${team} submitted successfully!`);
-      } else {
-        throw new Error(result.detail || 'An error occurred while submitting your vote.');
-      }
+        body: new URLSearchParams({
+          'team': team,
+        }),
+      })
+      .then(response => {
+        if (response.ok) {
+          window.alert(`Vote for ${team} submitted successfully!`);
+        } else {
+          response.json().then(result => {
+            throw new Error(result.detail || 'An error occured while submitting your vote.')
+          })
+        }
+      })
     } catch (err) {
       console.log(`Error when submitting vote: ${err}`);
       window.alert('Something went wrong... Please try again!');

@@ -15,20 +15,18 @@ templates = Jinja2Templates(directory="/app/template")
 db = firestore.Client()
 votes_collection = db.collection("votes")
 
-votes = votes_collection.stream()
-vote_data = []
-for v in votes:
-    vote_data.append(v.to_dict())
-
 @app.get("/")
 async def read_root(request: Request):
     # ====================================
     # ++++ START CODE HERE ++++
     # ====================================
+    votes = votes_collection.stream()
+    vote_data = []
+    for v in votes:
+        vote_data.append(v.to_dict())
 
     tabs_count = len(list(filter(lambda v: v["team"] == "TABS", vote_data)))
     spaces_count = len(vote_data) - tabs_count
-
     # ====================================
     # ++++ STOP CODE ++++
     # ====================================
@@ -36,7 +34,7 @@ async def read_root(request: Request):
         "request": request,
         "tabs_count": tabs_count,
         "spaces_count": spaces_count,
-        "recent_votes": vote_data
+        "recent_votes": vote_data[-5:]
     })
 
 
@@ -48,15 +46,14 @@ async def create_vote(team: Annotated[str, Form()]):
     # ====================================
     # ++++ START CODE HERE ++++
     # ====================================
-
     votes_collection.add({
         "team": team,
         "time_cast": datetime.datetime.now(datetime.timezone.utc).isoformat()
     })
+
     return {
         "detail": "Vote successfully cast.",
     }
-
     # ====================================
     # ++++ STOP CODE ++++
     # ====================================
